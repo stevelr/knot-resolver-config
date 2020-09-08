@@ -1,12 +1,13 @@
 # knot-resolver utilities - call this from .bashrc/.zshrc to add functions
 # (requires additional functions in kresd.conf)
+# vim:set expandtab:ts=4
 
 # avoid sudo if you're root or in the knot-resolver group
 _id=$(id)
 if  [[ ! $_id =~ \(root\) ]] && [[ ! $_id =~ \(knot-resolver\) ]]; then
-	KNOT_SUDO="sudo"
+    KNOT_SUDO="sudo"
 fi
-    
+
 if [ -d /run/knot-resolver ]; then
     send-knot-resolver () {
         # Send command(s) from stdin to knot-resolver.
@@ -14,24 +15,22 @@ if [ -d /run/knot-resolver ]; then
         $KNOT_SUDO nc -NU /run/knot-resolver/control/1 \
            | sed 's/^> //'
     }
-    
+
     # clear dns cache. Prints the previous number of cache entries.
     dns-cache-clear () {
         echo -n "cache.clear()" | send-knot-resolver
     }
-    
+
     # Retrieve dns-fowarder statistics in json
     dns-stats () {
-        local stats=$(echo -n "stats.list()" | send-knot-resolver \
-          | sed -r 's/\[([^\]+)\]\s*=>\s*([[:digit:]])+$/"\1": \2,/')
-        echo "{\n$stats}" | sed 's/,}/\n}/'
+        echo -n "tojson(stats.list())" | send-knot-resolver
     }
-    
+
     # reset dns rules back to normal
     dns-reset () {
         echo -n "reset_rules()" | send-knot-resolver
     }
-    
+
     # bypass dns forwarding rules and forward all queries to the provided IP
     dns-forward-to () {
         local ip="$1"
