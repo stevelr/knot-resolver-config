@@ -2,9 +2,8 @@
 # (requires additional functions in kresd.conf)
 # vim:set expandtab:ts=4
 
-# avoid sudo if you're root or in the knot-resolver group
-_id=$(id)
-if  [[ ! $_id =~ \(root\) ]] && [[ ! $_id =~ \(knot-resolver\) ]]; then
+# avoid sudo if in either root or knot-resolver group
+if ! $(groups | tr ' ' '\n' | grep -E '(^root$)|(^knot-resolver$)' >/dev/null); then
     KNOT_SUDO="sudo"
 fi
 
