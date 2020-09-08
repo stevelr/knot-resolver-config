@@ -36,7 +36,7 @@ DNS resolution rules:
   such as at home or office. For fully-qualified hosts in that
   domain, requests are forwarded to the local DNS server.
 
-## Accompanying bash/zsh utilities
+## Included bash/zsh utilities
 
 If you source `knot_resolver.sh` from your .bashrc or .zshrc,
 the following commands will be defined:
